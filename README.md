@@ -4,6 +4,8 @@
 
 This repository contains 15 battle-tested skills extracted from actual Claude Code development sessions. Each skill represents a proven solution to common challenges in AI-assisted software development.
 
+**English** | [日本語](README.ja.md)
+
 ## 📚 Categories
 
 - [🛠️ Claude Code Patterns](#-claude-code-patterns) - Claude Code操作パターン
