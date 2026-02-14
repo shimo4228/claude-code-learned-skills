@@ -2,130 +2,178 @@
 
 > A collection of practical patterns and best practices learned through real-world Claude Code usage
 
-This repository contains **24 battle-tested skills** extracted from actual Claude Code development sessions, organized into **global** (cross-project) and **project-specific** collections.
+This repository contains **39 battle-tested skills** extracted from actual Claude Code development sessions, following the [Agent Skills standard](https://agentskills.io/specification).
 
 **English** | [日本語](README.ja.md)
 
 ## Directory Structure
 
 ```
-├── global/                    # Cross-project skills (~/.claude/skills/learned/)
-│   ├── architecture/          # System design patterns
-│   ├── claude-code/           # Claude Code operation patterns
-│   ├── llm/                   # LLM integration patterns
-│   ├── process/               # Development process patterns
-│   └── python/                # Python-specific patterns
-└── projects/                  # Project-specific skills (.claude/skills/learned/)
-    └── zenn-content/          # Zenn article writing patterns
+skills/
+├── ai-era-architecture-principles/SKILL.md
+├── brainstorming-communication/SKILL.md
+├── cjk-aware-text-metrics/SKILL.md
+├── ...
+└── zenn-textlint-workarounds/SKILL.md
 ```
 
----
-
-## Global Skills (18)
-
-Skills installed to `~/.claude/skills/learned/` — available across all projects.
-
-### Architecture (2)
-
-| Skill | Problem | Solution |
-|-------|---------|----------|
-| [AI Era Architecture Principles](global/architecture/ai-era-architecture-principles.md) | Traditional architecture patterns don't fit AI-powered applications | Micro-Dependencies principle, LLM composability, context window optimization |
-| [Service Layer Extraction](global/architecture/service-layer-extraction.md) | CLI modules mix business logic and UI concerns | Extract testable service layer from Typer/Click CLI modules |
-
-### Claude Code (7)
-
-| Skill | Problem | Solution |
-|-------|---------|----------|
-| [Claude Code Tool Patterns](global/claude-code/claude-code-tool-patterns.md) | Large file write perf, Edit refresh errors, Hook JSON escape traps | Consolidated gotchas for Claude Code tool operations |
-| [Claude Code Self-Generation over API](global/claude-code/claude-code-self-generation-over-api.md) | Reaching for external APIs when Claude Code can generate directly | Use Claude Code's built-in LLM capability before calling external APIs |
-| [Claude Code MCP Manual Install](global/claude-code/claude-code-mcp-manual-install.md) | MCP server CLI installer unavailable in session | Manual JSON edit workaround for `~/.claude.json` mcpServers |
-| [Parallel Subagent Batch Merge](global/claude-code/parallel-subagent-batch-merge.md) | Sequential data generation is too slow | Parallel subagent batch generation with multi-format merge |
-| [Skill Stocktaking Process](global/claude-code/skill-stocktaking-process.md) | Skills accumulate without review, hitting Character Budget | 4-step consolidation with 3-tier organization and timing triggers |
-| [Directory Structure Enforcement Hooks](global/claude-code/directory-structure-enforcement-hooks.md) | Files placed in wrong directories | Claude Code hooks to auto-enforce directory structure rules |
-| [Cross-Source Fact Verification](global/claude-code/cross-source-fact-verification.md) | Draft articles contain inaccurate dates, counts, sequences | 5-step cross-referencing across debug logs, MEMORY, git, timestamps |
-
-### LLM (3)
-
-| Skill | Problem | Solution |
-|-------|---------|----------|
-| [CJK-Aware Text Metrics](global/llm/cjk-aware-text-metrics.md) | Token count estimation wrong for mixed CJK/Latin text | Weighted estimation formula for multilingual LLM pipelines |
-| [Data Generation Quality Metrics Loop](global/llm/data-generation-quality-metrics-loop.md) | Auto-generated data quality is inconsistent | Quantitative metrics loop for iterative quality improvement |
-| [Deep Research API Landscape](global/llm/deep-research-api-landscape.md) | Tempted to use Playwright for deep research automation | 3 major providers offer official Deep Research APIs (2026) |
-
-### Process (3)
-
-| Skill | Problem | Solution |
-|-------|---------|----------|
-| [Root Cause Challenge Pattern](global/process/root-cause-challenge-pattern.md) | Surface-level fixes instead of finding root cause | 5-step decision framework: challenge assumptions before adding complexity |
-| [Brainstorming Communication](global/process/brainstorming-communication.md) | AI gives premature concrete solutions during ideation | Communication protocol for idea exploration vs implementation phases |
-| [JSON Data Validation Test Design](global/process/json-data-validation-test-design.md) | Large JSON data files lack validation | Schema, source data, and business rule validation test design |
-
-### Python (3)
-
-| Skill | Problem | Solution |
-|-------|---------|----------|
-| [Python Immutable Accumulator](global/python/python-immutable-accumulator.md) | Need to accumulate results without mutation | Frozen dataclass + tuple accumulation with `__slots__` gotcha |
-| [Python Optional Dependencies](global/python/python-optional-dependencies.md) | Heavy dependencies forced on users who don't need them | pyproject.toml extras, runtime checks, factory pattern |
-| [Python Module-to-Package Refactor](global/python/python-module-to-package-refactor.md) | Single module grew too large | Module-to-package refactoring with `mock.patch` target updates |
+Each skill lives in `skills/{skill-name}/SKILL.md` with YAML frontmatter for discovery by Agent Skills-compatible tools.
 
 ---
 
-## Project-Specific Skills (6)
+## Skills (39)
 
-Skills installed to `.claude/skills/learned/` within individual projects.
+### Architecture
 
-### zenn-content (6)
+| Skill | Description |
+|-------|-------------|
+| [ai-era-architecture-principles](skills/ai-era-architecture-principles/SKILL.md) | Framework adoption decision matrix: custom vs large frameworks in the Claude Code era |
+| [algorithm-migration-with-rollback](skills/algorithm-migration-with-rollback/SKILL.md) | Rollback-safe migration pattern for core algorithms (encryption, hashing, ML) with persisted data |
+| [service-layer-extraction](skills/service-layer-extraction/SKILL.md) | Extract business logic from Typer/Click CLI into a testable service layer |
 
-Patterns specific to Zenn/Qiita technical article writing.
+### Claude Code
 
-| Skill | Problem | Solution |
-|-------|---------|----------|
-| [Tech Writing Patterns](projects/zenn-content/tech-writing-patterns.md) | Inconsistent article quality and tone | Cross-posting, tone adjustment, technical article quality patterns |
-| [Zenn Context-Driven Writing](projects/zenn-content/zenn-context-driven-writing.md) | Articles written without structured preparation | Context collection and structuring workflow before drafting |
-| [Zenn-Qiita Crosspost Workflow](projects/zenn-content/zenn-qiita-crosspost-workflow.md) | Manual cross-posting is error-prone | Automated Zenn-to-Qiita conversion with format mapping |
-| [prh Hyphen Regex Escape](projects/zenn-content/prh-hyphen-regex-escape.md) | Node.js 20+ unicode regex rejects `\-` in prh patterns | Avoid hyphen-containing patterns in prh.yml |
-| [Zenn markdownlint Config](projects/zenn-content/zenn-markdownlint-config.md) | Default markdownlint rules conflict with Zenn syntax | Disable MD025/MD041/MD060/MD013; no globs in config |
-| [Zenn textlint Workarounds](projects/zenn-content/zenn-textlint-workarounds.md) | textlint false positives on Zenn-specific syntax | Known false positives and workarounds for Zenn articles |
+| Skill | Description |
+|-------|-------------|
+| [claude-code-tool-patterns](skills/claude-code-tool-patterns/SKILL.md) | Large file write perf, Edit refresh pattern, Hook JSON escape trap |
+| [claude-code-self-generation-over-api](skills/claude-code-self-generation-over-api/SKILL.md) | Try self-generation before API calls on Max plan |
+| [claude-code-mcp-manual-install](skills/claude-code-mcp-manual-install/SKILL.md) | Add MCP servers from within a session via jq-based ~/.claude.json editing |
+| [parallel-subagent-batch-merge](skills/parallel-subagent-batch-merge/SKILL.md) | Generate 50+ items with parallel subagents and merge outputs |
+| [skill-stocktaking-process](skills/skill-stocktaking-process/SKILL.md) | 4-step skill consolidation with character budget awareness |
+| [directory-structure-enforcement-hooks](skills/directory-structure-enforcement-hooks/SKILL.md) | PreToolUse + Stop hook 3-layer defense for directory rules |
+| [cross-source-fact-verification](skills/cross-source-fact-verification/SKILL.md) | Fact-check drafts against multiple independent sources |
+
+### LLM
+
+| Skill | Description |
+|-------|-------------|
+| [cjk-aware-text-metrics](skills/cjk-aware-text-metrics/SKILL.md) | CJK/Latin weighted token estimation for multilingual pipelines |
+| [cost-aware-llm-pipeline](skills/cost-aware-llm-pipeline/SKILL.md) | LLM cost control via model routing, budget tracking, retry, and prompt caching |
+| [data-generation-quality-metrics-loop](skills/data-generation-quality-metrics-loop/SKILL.md) | Iterative generate-measure-fix loops with quantitative metrics |
+| [deep-research-api-landscape](skills/deep-research-api-landscape/SKILL.md) | Official Deep Research APIs (OpenAI, Gemini, Perplexity) over browser automation |
+| [keyword-based-llm-eval](skills/keyword-based-llm-eval/SKILL.md) | Evaluate LLM-generated structured output with keyword matching and F1 metrics |
+| [long-document-llm-pipeline](skills/long-document-llm-pipeline/SKILL.md) | Process 50K+ char documents through LLM APIs with section splitting and batch cost reduction |
+| [regex-vs-llm-structured-text](skills/regex-vs-llm-structured-text/SKILL.md) | Parse structured text with regex first, add LLM only for low-confidence edge cases |
+
+### Process
+
+| Skill | Description |
+|-------|-------------|
+| [root-cause-challenge-pattern](skills/root-cause-challenge-pattern/SKILL.md) | 5-step decision framework: challenge assumptions before adding complexity |
+| [brainstorming-communication](skills/brainstorming-communication/SKILL.md) | Communication protocol for idea exploration vs implementation phases |
+| [json-data-validation-test-design](skills/json-data-validation-test-design/SKILL.md) | Layered pytest validation for auto-generated JSON data |
+
+### Python
+
+| Skill | Description |
+|-------|-------------|
+| [backward-compatible-frozen-extension](skills/backward-compatible-frozen-extension/SKILL.md) | Extend frozen dataclass or Pydantic pipeline with new fields without breaking consumers |
+| [content-hash-cache-pattern](skills/content-hash-cache-pattern/SKILL.md) | SHA-256 content-hash keying with frozen CacheEntry for expensive file processing |
+| [mock-friendly-api-layering](skills/mock-friendly-api-layering/SKILL.md) | Fix mock assertion failures from public functions forwarding internal params to shared helpers |
+| [python-immutable-accumulator](skills/python-immutable-accumulator/SKILL.md) | Frozen dataclass + tuple accumulation with `__slots__` gotcha |
+| [python-optional-dependencies](skills/python-optional-dependencies/SKILL.md) | pyproject.toml extras, runtime checks, factory pattern |
+| [python-module-to-package-refactor](skills/python-module-to-package-refactor/SKILL.md) | Module-to-package refactoring with `mock.patch` target updates |
+| [textual-tui-pipeline-interception](skills/textual-tui-pipeline-interception/SKILL.md) | Add interactive review/approval step to CLI pipeline using Textual TUI |
+
+### Swift / iOS
+
+| Skill | Description |
+|-------|-------------|
+| [immutable-model-updates](skills/immutable-model-updates/SKILL.md) | Thread-safe immutable state updates for Swift model structs |
+| [protocol-di-testing](skills/protocol-di-testing/SKILL.md) | Test Swift code with protocol-based dependency injection for file system, network, APIs |
+| [swift-actor-persistence](skills/swift-actor-persistence/SKILL.md) | Thread-safe data persistence layer using Swift actors with in-memory cache and file storage |
+| [swift-codable-decode-diagnosis](skills/swift-codable-decode-diagnosis/SKILL.md) | Debug Swift Codable JSON decode errors with vague localizedDescription messages |
+| [xcode-package-swift-misidentification](skills/xcode-package-swift-misidentification/SKILL.md) | Fix simulator launch failure caused by Package.swift misidentification |
+| [xcode-pbxproj-file-registration](skills/xcode-pbxproj-file-registration/SKILL.md) | Register .swift files added outside Xcode in 4 pbxproj sections |
+
+### Tech Writing (Zenn/Qiita)
+
+| Skill | Description |
+|-------|-------------|
+| [tech-writing-patterns](skills/tech-writing-patterns/SKILL.md) | Cross-posting, tone adjustment, quality patterns |
+| [zenn-context-driven-writing](skills/zenn-context-driven-writing/SKILL.md) | Context collection and structuring workflow before drafting |
+| [zenn-qiita-crosspost-workflow](skills/zenn-qiita-crosspost-workflow/SKILL.md) | Automated Zenn-to-Qiita conversion pipeline |
+| [prh-hyphen-regex-escape](skills/prh-hyphen-regex-escape/SKILL.md) | Node.js 20+ unicode regex incompatibility with prh hyphen patterns |
+| [zenn-markdownlint-config](skills/zenn-markdownlint-config/SKILL.md) | Zenn-specific markdownlint-cli2 rule overrides |
+| [zenn-textlint-workarounds](skills/zenn-textlint-workarounds/SKILL.md) | Known false positives and workarounds for Zenn articles |
 
 ---
 
 ## Usage
 
-### Installing Global Skills
+### Install individual skills
 
 ```bash
-# Copy all global skills (preserving categories)
-cp -r global/*/ ~/.claude/skills/learned/
+# Copy a single skill to your global learned skills
+cp skills/python-immutable-accumulator/SKILL.md \
+   ~/.claude/skills/learned/python-immutable-accumulator.md
 
-# Or copy individual skills
-cp global/python/python-immutable-accumulator.md ~/.claude/skills/learned/
+# Or to a project
+cp skills/zenn-markdownlint-config/SKILL.md \
+   your-project/.claude/skills/learned/zenn-markdownlint-config.md
 ```
 
-### Installing Project Skills
+### Install all skills
 
 ```bash
-# Copy project-specific skills to your project
-cp -r projects/zenn-content/ your-project/.claude/skills/learned/
+# Copy all skills (as flat .md files for Claude Code compatibility)
+for dir in skills/*/; do
+  name=$(basename "$dir")
+  cp "$dir/SKILL.md" ~/.claude/skills/learned/"$name".md
+done
 ```
+
+---
+
+## Agent Skills Standard
+
+Each `SKILL.md` includes YAML frontmatter following the [Agent Skills specification](https://agentskills.io/specification):
+
+```yaml
+---
+name: skill-name
+description: "Use when ... trigger phrase. Brief description."
+license: MIT
+metadata:
+  author: shimo4228
+  version: "1.0"
+  extracted: "2026-02-08"
+---
+```
+
+Compatible with:
+- [agnix](https://www.npmjs.com/package/agnix) — Agent Skills validator
+- [SkillsMP](https://skillsmp.com/) — Agent Skills marketplace
+- [SkillHub](https://www.skillhub.club/) — Skill discovery platform
 
 ---
 
 ## Contributing
 
-1. **Share your learned skills** — Extract patterns from your own Claude Code sessions
-2. **Improve existing skills** — Add examples, clarify explanations
-3. **Add new projects** — Create `projects/your-project/` with project-specific skills
+1. **Share your learned skills** -- Extract patterns from your own Claude Code sessions
+2. **Improve existing skills** -- Add examples, clarify explanations
+3. **Report issues** -- Found a gotcha that's outdated? Let us know
 
 ### Skill Format
 
 ```markdown
-# Skill Name
+---
+name: your-skill-name
+description: "Use when ... Brief description."
+license: MIT
+metadata:
+  author: your-github-username
+  version: "1.0"
+  extracted: "YYYY-MM-DD"
+---
+
+# Skill Title
 
 **Extracted:** YYYY-MM-DD
-**Context:** Brief description of the problem context
+**Context:** Brief problem context
 
 ## Problem
-Clear statement of the problem this skill solves
+Clear statement of the problem
 
 ## Solution
 Concrete solution with code examples
@@ -138,7 +186,7 @@ Specific scenarios where this skill applies
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) file for details
+MIT License -- see [LICENSE](LICENSE) file for details
 
 ---
 

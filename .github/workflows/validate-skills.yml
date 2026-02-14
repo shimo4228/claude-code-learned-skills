@@ -1,0 +1,90 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [main]
+    paths: ['skills/**']
+  pull_request:
+    branches: [main]
+    paths: ['skills/**']
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          errors=0
+          for skill_dir in skills/*/; do
+            name=$(basename "$skill_dir")
+            file="$skill_dir/SKILL.md"
+
+            if [ ! -f "$file" ]; then
+              echo "::error::Missing SKILL.md in $skill_dir"
+              errors=$((errors + 1))
+              continue
+            fi
+
+            # Check frontmatter exists
+            if ! head -1 "$file" | grep -q '^---$'; then
+              echo "::error file=$file::Missing YAML frontmatter"
+              errors=$((errors + 1))
+              continue
+            fi
+
+            # Extract frontmatter (awk works on both BSD and GNU)
+            frontmatter=$(awk '/^---$/{c++;next} c==1{print}' "$file")
+
+            # Check required fields
+            for field in name description license; do
+              if ! echo "$frontmatter" | grep -q "^${field}:"; then
+                echo "::error file=$file::Missing required field: $field"
+                errors=$((errors + 1))
+              fi
+            done
+
+            # Check name matches directory
+            fm_name=$(echo "$frontmatter" | awk -F': *' '/^name:/{gsub(/"/, "", $2); print $2}')
+            if [ "$fm_name" != "$name" ]; then
+              echo "::error file=$file::name '$fm_name' does not match directory '$name'"
+              errors=$((errors + 1))
+            fi
+
+            # Check description has "Use when" trigger
+            desc=$(echo "$frontmatter" | awk -F': *' '/^description:/{gsub(/"/, "", $2); print $2}')
+            if ! echo "$desc" | grep -qi 'use when'; then
+              echo "::warning file=$file::Description should include a 'Use when...' trigger phrase"
+            fi
+          done
+
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors validation errors found"
+            exit 1
+          fi
+          echo "All skills validated successfully"
+
+      - name: Check for broken links in README
+        run: |
+          errors=0
+          for readme in README.md README.ja.md; do
+            if [ ! -f "$readme" ]; then continue; fi
+            # Extract markdown links: ](skills/...) — excludes code blocks
+            grep -oE '\]\(skills/[^)]+\)' "$readme" | awk '{gsub(/^\]\(|\)$/, ""); print}' | while read -r link; do
+              if [ ! -f "$link" ]; then
+                echo "::error file=$readme::Broken link: $link"
+                errors=$((errors + 1))
+              fi
+            done
+          done
+
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors broken links found"
+            exit 1
+          fi
+          echo "No broken links found"
