@@ -149,12 +149,22 @@ Phase A と C-1 は並行実行可能。
 
 | Phase | 内容 | 状態 |
 |-------|------|------|
-| A | ECC への PR (3-5件) | 未着手 |
+| A | ECC への PR (5件) | PR 提出済み（マージ待ち） |
 | B | awesome-agent-skills への掲載 | 未着手（Phase A 後） |
 | C-1 | Zenn 記事: Agent Skills 入門 | 未着手 |
 | C-2 | Zenn 記事: learned skills 公開全工程 | 未着手 |
 | C-3 | Zenn 記事: Claude Code × Swift | 未着手 |
 | D | agentskills 仕様への貢献 | 未着手（長期） |
+
+### Phase A PR 一覧 (2026-02-14)
+
+| # | スキル | PR |
+|---|--------|-----|
+| 1 | cost-aware-llm-pipeline | [#219](https://github.com/affaan-m/everything-claude-code/pull/219) |
+| 2 | swift-protocol-di-testing | [#220](https://github.com/affaan-m/everything-claude-code/pull/220) |
+| 3 | swift-actor-persistence | [#221](https://github.com/affaan-m/everything-claude-code/pull/221) |
+| 4 | content-hash-cache-pattern | [#222](https://github.com/affaan-m/everything-claude-code/pull/222) |
+| 5 | regex-vs-llm-structured-text | [#223](https://github.com/affaan-m/everything-claude-code/pull/223) |
 
 ## 検証方法
 
