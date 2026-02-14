@@ -1,3 +1,9 @@
+---
+name: python-immutable-accumulator
+description: "Frozen dataclass + tuple accumulation pattern with slots gotcha. Safe state building."
+user-invocable: false
+---
+
 # Python Immutable Accumulator
 # Python不変蓄積パターン
 

@@ -1,3 +1,9 @@
+---
+name: python-optional-dependencies
+description: "Optional dependency pattern: pyproject.toml extras, runtime checks, factory pattern."
+user-invocable: false
+---
+
 # Python Optional Dependencies Pattern
 
 **Extracted:** 2026-02-09

@@ -1,3 +1,9 @@
+---
+name: ai-era-architecture-principles
+description: "Framework adoption decision matrix: custom vs large frameworks in the Claude Code era. Micro-Dependencies principle."
+user-invocable: false
+---
+
 # AI Era Architecture Principles
 
 **Extracted:** 2026-02-09

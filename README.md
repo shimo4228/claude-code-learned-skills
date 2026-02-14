@@ -2,267 +2,121 @@
 
 > A collection of practical patterns and best practices learned through real-world Claude Code usage
 
-This repository contains 15 battle-tested skills extracted from actual Claude Code development sessions. Each skill represents a proven solution to common challenges in AI-assisted software development.
+This repository contains **24 battle-tested skills** extracted from actual Claude Code development sessions, organized into **global** (cross-project) and **project-specific** collections.
 
 **English** | [日本語](README.ja.md)
 
-## 📚 Categories
+## Directory Structure
 
-- [🛠️ Claude Code Patterns](#-claude-code-patterns) - Claude Code操作パターン
-- [🏗️ Architecture Patterns](#️-architecture-patterns) - アーキテクチャパターン
-- [🐍 Python Patterns](#-python-patterns) - Python特有のパターン
-- [🦅 Swift Patterns](#-swift-patterns) - Swift特有のパターン
-- [🤖 LLM Integration Patterns](#-llm-integration-patterns) - LLM活用パターン
-- [⚙️ Development Process](#️-development-process) - 開発プロセス
-
----
-
-## 🛠️ Claude Code Patterns
-
-Patterns for effective Claude Code usage and tool operation.
-
-### [File Edit Refresh Pattern](claude-code/file-edit-refresh-pattern.md)
-**Problem:** "File has been modified since read" errors during Edit operations
-**Solution:** Always refresh file contents with Read before Edit, especially in long sessions
-
-```python
-# Pattern
-1. Read(file_path)        # Refresh current state
-2. Edit(file_path, ...)   # Now safe to edit
 ```
-
-**When to use:** Before every Edit call in sessions with multiple file operations
-
-### [Large File Write Performance](claude-code/large-file-write-performance.md)
-**Problem:** Slow performance when writing large files
-**Solution:** Optimize Write operations for large file handling
-
-**When to use:** When working with files larger than typical code files
-
----
-
-## 🏗️ Architecture Patterns
-
-System design and architectural decision-making patterns.
-
-### [AI Era Architecture Principles](architecture/ai-era-architecture-principles.md)
-**Problem:** Traditional architecture patterns don't fit AI-powered applications
-**Solution:** Architecture principles specifically designed for LLM-integrated systems
-
-**Key principles:**
-- Design for LLM composability
-- Optimize for context window constraints
-- Structure for prompt engineering
-- Plan for non-deterministic behavior
-
-### [Protocol DI Testing](architecture/protocol-di-testing.md)
-**Problem:** Hard to test code with tight coupling to external dependencies
-**Solution:** Use Protocol (duck typing) for dependency injection and easy mocking
-
-```python
-from typing import Protocol
-
-class Repository(Protocol):
-    def find_by_id(self, id: str) -> dict | None: ...
-    def save(self, entity: dict) -> dict: ...
-```
-
-**Benefits:** Better testability, loose coupling, clear contracts
-
-### [Backward Compatible Frozen Extension](architecture/backward-compatible-frozen-extension.md)
-**Problem:** Need to extend immutable dataclasses without breaking existing code
-**Solution:** Extend frozen dataclasses while maintaining backward compatibility
-
-**When to use:** When evolving immutable data models in production systems
-
----
-
-## 🐍 Python Patterns
-
-Python-specific idioms and best practices.
-
-### [Immutable Model Updates](python/immutable-model-updates.md)
-**Problem:** Mutation causes hidden side effects and hard-to-debug issues
-**Solution:** Use immutable patterns with dataclasses and type safety
-
-```python
-from dataclasses import dataclass, replace
-
-@dataclass(frozen=True)
-class User:
-    name: str
-    email: str
-
-# Immutable update
-updated_user = replace(user, email="new@example.com")
-```
-
-**Benefits:** No side effects, easier debugging, safe concurrency
-
-### [Python Immutable Accumulator](python/python-immutable-accumulator.md)
-**Problem:** Need to accumulate results without mutation
-**Solution:** Functional accumulation patterns in Python
-
-**When to use:** Data transformations, aggregations, pipeline processing
-
-### [Python Optional Dependencies](python/python-optional-dependencies.md)
-**Problem:** Don't want to force users to install heavy dependencies they might not use
-**Solution:** Properly handle optional dependencies with graceful degradation
-
-```python
-try:
-    import expensive_lib
-    HAS_EXPENSIVE = True
-except ImportError:
-    HAS_EXPENSIVE = False
-
-def feature_requiring_lib():
-    if not HAS_EXPENSIVE:
-        raise ImportError("Install with: pip install package[extra]")
+├── global/                    # Cross-project skills (~/.claude/skills/learned/)
+│   ├── architecture/          # System design patterns
+│   ├── claude-code/           # Claude Code operation patterns
+│   ├── llm/                   # LLM integration patterns
+│   ├── process/               # Development process patterns
+│   └── python/                # Python-specific patterns
+└── projects/                  # Project-specific skills (.claude/skills/learned/)
+    └── zenn-content/          # Zenn article writing patterns
 ```
 
 ---
 
-## 🦅 Swift Patterns
+## Global Skills (18)
 
-Swift-specific patterns for iOS/macOS development.
+Skills installed to `~/.claude/skills/learned/` — available across all projects.
 
-### [Swift Actor Persistence](swift/swift-actor-persistence.md)
-**Problem:** Thread-safe data persistence in Swift concurrent environments
-**Solution:** Use Actor pattern for safe concurrent data access and persistence
+### Architecture (2)
 
-```swift
-actor DataStore {
-    private var cache: [String: Data] = [:]
+| Skill | Problem | Solution |
+|-------|---------|----------|
+| [AI Era Architecture Principles](global/architecture/ai-era-architecture-principles.md) | Traditional architecture patterns don't fit AI-powered applications | Micro-Dependencies principle, LLM composability, context window optimization |
+| [Service Layer Extraction](global/architecture/service-layer-extraction.md) | CLI modules mix business logic and UI concerns | Extract testable service layer from Typer/Click CLI modules |
 
-    func save(_ data: Data, for key: String) async {
-        cache[key] = data
-        // Persist to disk
-    }
-}
-```
+### Claude Code (7)
 
-**Benefits:** Thread safety, data race prevention, clean concurrency model
+| Skill | Problem | Solution |
+|-------|---------|----------|
+| [Claude Code Tool Patterns](global/claude-code/claude-code-tool-patterns.md) | Large file write perf, Edit refresh errors, Hook JSON escape traps | Consolidated gotchas for Claude Code tool operations |
+| [Claude Code Self-Generation over API](global/claude-code/claude-code-self-generation-over-api.md) | Reaching for external APIs when Claude Code can generate directly | Use Claude Code's built-in LLM capability before calling external APIs |
+| [Claude Code MCP Manual Install](global/claude-code/claude-code-mcp-manual-install.md) | MCP server CLI installer unavailable in session | Manual JSON edit workaround for `~/.claude.json` mcpServers |
+| [Parallel Subagent Batch Merge](global/claude-code/parallel-subagent-batch-merge.md) | Sequential data generation is too slow | Parallel subagent batch generation with multi-format merge |
+| [Skill Stocktaking Process](global/claude-code/skill-stocktaking-process.md) | Skills accumulate without review, hitting Character Budget | 4-step consolidation with 3-tier organization and timing triggers |
+| [Directory Structure Enforcement Hooks](global/claude-code/directory-structure-enforcement-hooks.md) | Files placed in wrong directories | Claude Code hooks to auto-enforce directory structure rules |
+| [Cross-Source Fact Verification](global/claude-code/cross-source-fact-verification.md) | Draft articles contain inaccurate dates, counts, sequences | 5-step cross-referencing across debug logs, MEMORY, git, timestamps |
 
----
+### LLM (3)
 
-## 🤖 LLM Integration Patterns
+| Skill | Problem | Solution |
+|-------|---------|----------|
+| [CJK-Aware Text Metrics](global/llm/cjk-aware-text-metrics.md) | Token count estimation wrong for mixed CJK/Latin text | Weighted estimation formula for multilingual LLM pipelines |
+| [Data Generation Quality Metrics Loop](global/llm/data-generation-quality-metrics-loop.md) | Auto-generated data quality is inconsistent | Quantitative metrics loop for iterative quality improvement |
+| [Deep Research API Landscape](global/llm/deep-research-api-landscape.md) | Tempted to use Playwright for deep research automation | 3 major providers offer official Deep Research APIs (2026) |
 
-Patterns for integrating Large Language Models into applications.
+### Process (3)
 
-### [Cost-Aware LLM Pipeline](llm/cost-aware-llm-pipeline.md)
-**Problem:** LLM API costs can spiral out of control
-**Solution:** Design pipelines with cost optimization as a first-class concern
+| Skill | Problem | Solution |
+|-------|---------|----------|
+| [Root Cause Challenge Pattern](global/process/root-cause-challenge-pattern.md) | Surface-level fixes instead of finding root cause | 5-step decision framework: challenge assumptions before adding complexity |
+| [Brainstorming Communication](global/process/brainstorming-communication.md) | AI gives premature concrete solutions during ideation | Communication protocol for idea exploration vs implementation phases |
+| [JSON Data Validation Test Design](global/process/json-data-validation-test-design.md) | Large JSON data files lack validation | Schema, source data, and business rule validation test design |
 
-**Strategies:**
-- Use cheaper models for simple tasks
-- Cache results aggressively
-- Implement request batching
-- Monitor and alert on cost thresholds
+### Python (3)
 
-### [Long Document LLM Pipeline](llm/long-document-llm-pipeline.md)
-**Problem:** Documents exceed LLM context window limits
-**Solution:** Multi-stage pipeline for processing long documents
-
-**Approach:**
-1. Chunk document intelligently
-2. Process chunks with context overlap
-3. Aggregate results with summary pass
-4. Final synthesis
-
-### [Regex vs LLM Structured Text](llm/regex-vs-llm-structured-text.md)
-**Problem:** When to use regex vs LLM for text extraction
-**Solution:** Decision framework for choosing the right tool
-
-| Pattern | Use Regex | Use LLM |
-|---------|-----------|---------|
-| Fixed format | ✅ Fast, reliable | ❌ Overkill |
-| Variable format | ❌ Brittle | ✅ Flexible |
-| Semantic understanding | ❌ Impossible | ✅ Natural |
-| Cost sensitive | ✅ Free | ❌ Pay per call |
+| Skill | Problem | Solution |
+|-------|---------|----------|
+| [Python Immutable Accumulator](global/python/python-immutable-accumulator.md) | Need to accumulate results without mutation | Frozen dataclass + tuple accumulation with `__slots__` gotcha |
+| [Python Optional Dependencies](global/python/python-optional-dependencies.md) | Heavy dependencies forced on users who don't need them | pyproject.toml extras, runtime checks, factory pattern |
+| [Python Module-to-Package Refactor](global/python/python-module-to-package-refactor.md) | Single module grew too large | Module-to-package refactoring with `mock.patch` target updates |
 
 ---
 
-## ⚙️ Development Process
+## Project-Specific Skills (6)
 
-Workflow and process patterns for development.
+Skills installed to `.claude/skills/learned/` within individual projects.
 
-### [Algorithm Migration with Rollback](process/algorithm-migration-with-rollback.md)
-**Problem:** Risky to replace critical algorithms in production
-**Solution:** Implement feature flag system with A/B comparison and rollback
+### zenn-content (6)
 
-```python
-def process_data(data, use_new_algorithm=False):
-    if use_new_algorithm:
-        return new_algorithm(data)
-    else:
-        return legacy_algorithm(data)
-```
+Patterns specific to Zenn/Qiita technical article writing.
 
-**Steps:** Feature flag → Parallel run → Compare results → Gradual rollout → Full migration
-
-### [Root Cause Challenge Pattern](process/root-cause-challenge-pattern.md)
-**Problem:** Stop at surface-level fixes instead of finding root cause
-**Solution:** Systematic root cause analysis with "5 Whys" approach
-
-**Process:**
-1. State the problem
-2. Ask "Why?" to find the cause
-3. Repeat "Why?" for each answer (typically 5 times)
-4. Identify the root cause
-5. Fix at the root level
-
-### [Skill Stocktaking Process](process/skill-stocktaking-process.md)
-**Problem:** Learned patterns get forgotten and not reused
-**Solution:** Regular review and documentation of learned patterns
-
-**Workflow:**
-1. Weekly review of sessions
-2. Extract reusable patterns
-3. Document as skills
-4. Integrate into workflow
-5. Share with team
+| Skill | Problem | Solution |
+|-------|---------|----------|
+| [Tech Writing Patterns](projects/zenn-content/tech-writing-patterns.md) | Inconsistent article quality and tone | Cross-posting, tone adjustment, technical article quality patterns |
+| [Zenn Context-Driven Writing](projects/zenn-content/zenn-context-driven-writing.md) | Articles written without structured preparation | Context collection and structuring workflow before drafting |
+| [Zenn-Qiita Crosspost Workflow](projects/zenn-content/zenn-qiita-crosspost-workflow.md) | Manual cross-posting is error-prone | Automated Zenn-to-Qiita conversion with format mapping |
+| [prh Hyphen Regex Escape](projects/zenn-content/prh-hyphen-regex-escape.md) | Node.js 20+ unicode regex rejects `\-` in prh patterns | Avoid hyphen-containing patterns in prh.yml |
+| [Zenn markdownlint Config](projects/zenn-content/zenn-markdownlint-config.md) | Default markdownlint rules conflict with Zenn syntax | Disable MD025/MD041/MD060/MD013; no globs in config |
+| [Zenn textlint Workarounds](projects/zenn-content/zenn-textlint-workarounds.md) | textlint false positives on Zenn-specific syntax | Known false positives and workarounds for Zenn articles |
 
 ---
 
-## 🚀 Usage
+## Usage
 
-### Installing Skills
-
-Each skill can be used as a reference document or integrated into your Claude Code setup:
+### Installing Global Skills
 
 ```bash
-# Copy individual skills to your Claude Code skills directory
-cp python/immutable-model-updates.md ~/.claude/skills/learned/
+# Copy all global skills (preserving categories)
+cp -r global/*/ ~/.claude/skills/learned/
 
-# Or copy entire categories
-cp -r python/* ~/.claude/skills/learned/
+# Or copy individual skills
+cp global/python/python-immutable-accumulator.md ~/.claude/skills/learned/
 ```
 
-### Using Skills in Claude Code
+### Installing Project Skills
 
-Skills are automatically available when you work with Claude Code. Reference them by name in your conversations:
-
-```
-User: "I need to update this dataclass without mutation"
-Claude: [References immutable-model-updates skill]
+```bash
+# Copy project-specific skills to your project
+cp -r projects/zenn-content/ your-project/.claude/skills/learned/
 ```
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-These skills were extracted from real development sessions. Contributions are welcome!
-
-### How to Contribute
-
-1. **Share your learned skills** - Extract patterns from your own Claude Code sessions
-2. **Improve existing skills** - Add examples, clarify explanations, fix errors
-3. **Add new categories** - Propose new skill categories for organization
+1. **Share your learned skills** — Extract patterns from your own Claude Code sessions
+2. **Improve existing skills** — Add examples, clarify explanations
+3. **Add new projects** — Create `projects/your-project/` with project-specific skills
 
 ### Skill Format
-
-Each skill should follow this structure:
 
 ```markdown
 # Skill Name
@@ -271,44 +125,22 @@ Each skill should follow this structure:
 **Context:** Brief description of the problem context
 
 ## Problem
-
 Clear statement of the problem this skill solves
 
 ## Solution
-
 Concrete solution with code examples
 
 ## When to Use
-
 Specific scenarios where this skill applies
-
-## Related Patterns
-
-Links to related skills
 ```
 
 ---
 
-## 📝 License
+## License
 
-MIT License - see [LICENSE](LICENSE) file for details
-
----
-
-## 🙏 Acknowledgments
-
-- Created with [Claude Code](https://claude.ai/claude-code)
-- Extracted using the continuous learning pattern
-- Inspired by real-world development challenges
+MIT License — see [LICENSE](LICENSE) file for details
 
 ---
 
-## 📖 Learn More
-
-- [Claude Code Documentation](https://docs.anthropic.com/claude/docs/claude-code)
-- [Everything Claude Code (ECC)](https://github.com/anthropics/claude-code) - Community patterns and configurations
-
----
-
-**Created by:** [@shimomoto_tatsuya](https://github.com/shimomoto_tatsuya)
-**Last Updated:** 2026-02-09
+**Created by:** [@shimo4228](https://github.com/shimo4228)
+**Last Updated:** 2026-02-14

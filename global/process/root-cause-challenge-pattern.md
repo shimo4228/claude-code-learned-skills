@@ -1,3 +1,9 @@
+---
+name: root-cause-challenge-pattern
+description: "5-step decision framework for feature requests. Challenge assumptions before adding complexity."
+user-invocable: false
+---
+
 # Root Cause Challenge Pattern - 機能要求の真の動機を問う
 
 **Extracted:** 2026-02-09
