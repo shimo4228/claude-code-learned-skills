@@ -360,7 +360,7 @@ Phase 0 で実在が確認されたプラットフォームのみ対象。
 | 6 | CI/CD 設定 | Step 0, 2 | `.github/workflows/validate-skills.yml` | **完了** (frontmatter検証 + リンクチェック) |
 | 7 | GitHub トピック追加・push | Step 3, 6 | 4トピック設定、51ファイル push | **完了** |
 | 8 | マーケットプレイス公開 | Step 0, 7 | SkillsMP: 39件登録済, SkillHub: 自動インデックス待ち | **完了** |
-| 9 | `docs/PUBLISHING.md` 作成 | Step 0-8 の経験を反映 | `docs/PUBLISHING.md` | 未着手 |
+| 9 | `docs/PUBLISHING.md` 作成 | Step 0-8 の経験を反映 | `docs/PUBLISHING.md` | **完了** |
 
 **並列実行可能**: Step 0 と Step 1 は独立。Step 4 は Step 2 と並列可能。
 
