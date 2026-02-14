@@ -358,8 +358,8 @@ Phase 0 で実在が確認されたプラットフォームのみ対象。
 | 4 | プロジェクト learned skills の評価 | なし | 評価結果一覧 | **完了** (20件評価: 15収録/3保留/2除外) |
 | 5 | 評価結果のユーザー承認 → 追加変換 | Step 1, 4 | 追加の `skills/*/SKILL.md` | **完了** (15件変換, 合計39スキル) |
 | 6 | CI/CD 設定 | Step 0, 2 | `.github/workflows/validate-skills.yml` | **完了** (frontmatter検証 + リンクチェック) |
-| 7 | GitHub トピック追加・push | Step 3, 6 | - | 未着手 |
-| 8 | マーケットプレイス公開 | Step 0, 7 | 登録完了 | 未着手 |
+| 7 | GitHub トピック追加・push | Step 3, 6 | 4トピック設定、51ファイル push | **完了** |
+| 8 | マーケットプレイス公開 | Step 0, 7 | SkillsMP: 39件登録済, SkillHub: 自動インデックス待ち | **完了** |
 | 9 | `docs/PUBLISHING.md` 作成 | Step 0-8 の経験を反映 | `docs/PUBLISHING.md` | 未着手 |
 
 **並列実行可能**: Step 0 と Step 1 は独立。Step 4 は Step 2 と並列可能。
